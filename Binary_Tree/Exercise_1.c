@@ -1,6 +1,6 @@
-/*4) Contagem de Nós e Folhas
-a) Escreva uma função que conte o número total de nós da árvore.
-b) Escreva outra função que conte quantos nós folha (sem filhos) existem.*/
+/*4) Building a Binary Tree
+Implement a data structure to represent a binary tree.
+Create a function to insert new nodes into the tree.*/
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
@@ -10,7 +10,6 @@ typedef struct Node {
     struct Node* left;
     struct Node* right;
 } Node;
-
 Node* createNode(int data) {
     Node* newNode = (Node*)malloc(sizeof(Node));
     if (!newNode) {
@@ -33,31 +32,20 @@ Node* insert(Node* root, int data) {
     }
     return root;
 }
-
-int countNodes(Node* root) {
-    if (root == NULL) {
-        return 0;
+void inorderTraversal(Node* root) {
+    if (root != NULL) {
+        inorderTraversal(root->left);
+        printf("%d ", root->data);
+        inorderTraversal(root->right);
     }
-    return 1 + countNodes(root->left) + countNodes(root->right);
 }
-
-int countLeaves(Node* root) {
-    if (root == NULL) {
-        return 0;
-    }
-    if (root->left == NULL && root->right == NULL) {
-        return 1;
-    }
-    return countLeaves(root->left) + countLeaves(root->right);
-}
-
 void freeTree(Node* root) {
     if (root != NULL) {
         freeTree(root->left);
         freeTree(root->right);
         free(root);
     }
-}
+}   
 
 int main() {
     Node* root = NULL;
@@ -68,10 +56,9 @@ int main() {
     insert(root, 4);
     insert(root, 6);
     insert(root, 8);
-
-    printf("Total number of nodes: %d\n", countNodes(root));
-    printf("Total number of leaf nodes: %d\n", countLeaves(root));
-
+    printf("Inorder Traversal of the Binary Tree: ");
+    inorderTraversal(root);
+    printf("\n");
     freeTree(root);
     return 0;
 }
